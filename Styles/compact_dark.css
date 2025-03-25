@@ -2,7 +2,7 @@
 
 /*? Static Styles*/
 /** Canvas*/
-body{
+body {
     /*Font*/
     font-family: "Comfortaa", sans-serif;
     /*Background*/
@@ -10,56 +10,58 @@ body{
     background-size: auto;
     background-position: center;
     background-repeat: no-repeat;
+    /*Layout*/
+    margin: 0;
+    display: grid;
+    grid-template-columns: 250px auto;
+    grid-template-rows: 1fr 50px;
+    height: 100vh;
 }
+
 /** Taskbar*/
-#taskbar{
-    position: fixed;
-    bottom: 0;
-    left: 0;
+#taskbar {
+    grid-column: 2;
+    grid-row: 2;
     height: 50px;
-    width: 100%;
-    background-color: #242124be;
-    backdrop-filter: blur(5px);
-    box-shadow: 0px -2px 10px 0px #242124be;
+    background-color: #242124;
     z-index: 1;
     display: flex;
     flex-direction: row;
     gap: 10px;
     align-items: center;
 }
-.taskbar-divider{
+.taskbar-divider {
     background-color: white;
     height: 25px;
     width: 1px;
 }
-#taskbar-left{ /* Contains start menu and search menu */
+#taskbar-left { /* Contains start menu and search menu */
     display: flex;
     flex-direction: row;
     gap: 10px;
     align-items: center;
 }
-#taskbar-center{ /* Contains open files and apps */
+#taskbar-center { /* Contains open files and apps */
     display: flex;
     flex-direction: row;
     gap: 10px;
     align-items: center;
 }
-#taskbar-right{ /* Contains action buttons and time indicator */
+#taskbar-right { /* Contains action buttons and time indicator */
     display: flex;
     flex-direction: row;
     gap: 10px;
     align-items: center;
-    position: absolute;
-    right: 0;
+    margin-left: auto;
 }
-#start-menu{
+#start-menu {
     height: 40px;
     width: 40px;
     background-color: #987654;
     border-radius: 10px;
     cursor: pointer;
 }
-#search-menu{
+#search-menu {
     height: 40px;
     width: 40px;
     border-radius: 10px;
@@ -70,48 +72,76 @@ body{
     background-position: center;
     background-repeat: no-repeat;
 }
-#date-time{
+#date-time {
     display: flex;
     flex-direction: column;
     gap: 5px;
     width: 90px;
 }
-#timeIndicator{
+#timeIndicator {
     color: white;
     margin: 0;
     text-align: center;
 }
-#dateIndicator{
+#dateIndicator {
     color: white;
     margin: 0;
     text-align: center;
 }
-.actionButton{ /* A class for all action buttons to look the same. Can be overwritten with IDs. */
+.actionButton {
     height: 25px;
     width: 25px;
     background-color: #444444;
     border-radius: 6.25px;
     cursor: pointer;
 }
-#switch-button{
+#switch-button {
     background-image: url("/Assets/Icons/mode_switch.png");
+    background-size: 90%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+#split-button {
+    background-image: url("/Assets/Icons/split_view.png");
     background-size: 80%;
     background-position: center;
     background-repeat: no-repeat;
 }
 
+/** Sidebar*/
+#sidebar {
+    grid-row: 1 / span 2;
+    width: 250px;
+    background-color: #242124;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    padding-top: 10px;
+}
+
+/** Display*/
+#display {
+    grid-column: 2;
+    grid-row: 1;
+    background-color: #ffffff50;
+    padding: 10px;
+    overflow: auto;
+}
+
 /*? Animations*/
-.posAni{
+.posAni {
     transition: transform 0.25s ease-in-out;
     transform: translateY(0px) scale(1);
 }
-.posAni:hover{
+.posAni:hover {
     transform: translateY(-5px) scale(1.2);
 }
-.scaleAni{
+.scaleAni {
     transition: transform 0.25s ease-in-out;
     transform: scale(1);
 }
-.scaleAni:hover{
+.scaleAni:hover {
     transform: scale(1.1);
 }

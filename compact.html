@@ -4,8 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ope'Base</title>
+
+    <!--? Theme-->
+    <link id="css-theme" rel="stylesheet" href="Styles/compact_dark.css">
+
+    <!--? Highlight.js Import-->
+    <link rel="stylesheet" href="Library/styles/atom-one-dark.min.css">
+    <script src="Library/highlight.min.js"></script>
+
+    <!--? Other Scripts-->
+    <script src="JavaScripts/modeswitch.js"></script>
 </head>
 <body>
-    This is Compact
+    <script src="JavaScripts/datetime.js"></script>
+
+    <div id="taskbar">
+        <div id="taskbar-left">
+            <div class="empty-space"></div>
+            <div id="start-menu" class="posAni"></div>
+            <div id="search-menu" class="posAni"></div>
+            <div class="taskbar-divider"></div>
+        </div>
+        <div id="taskbar-center">
+
+        </div>
+        <div id="taskbar-right">
+            <div class="taskbar-divider"></div>
+            <div class="actionButton scaleAni" id="split-button"></div>
+            <div class="actionButton scaleAni" id="switch-button" onclick="modeSwitch();"></div>
+            <div id="date-time">
+                <p id="timeIndicator"></p>
+                <p id="dateIndicator"></p>
+            </div>
+            <div class="empty-space"></div>
+        </div>
+    </div>
+
+    <div id="sidebar">
+
+    </div>
+
+    <div id="display">
+
+    </div>
 </body>
 </html>
