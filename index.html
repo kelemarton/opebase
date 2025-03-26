@@ -4,35 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ope'Base</title>
+
+    <!--? Theme-->
+    <link id="css-theme" rel="stylesheet" href="Styles/opebase_dark.css">
+
+    <!--? Highlight.js Import-->
+    <link rel="stylesheet" href="Library/styles/atom-one-dark.min.css">
+    <script src="Library/highlight.min.js"></script>
+
+    <!--? Other Scripts-->
+    <script src="JavaScripts/modeswitch.js"></script>
 </head>
 <body>
+    <script src="JavaScripts/datetime.js"></script>
 
-    <!--
-        ? This page will redirect the user to the set interface.
-        ! If the localStorage is empty, it will redirect to freestyle mode by default.
-        * If the interface is set to auto, it will redirect to the last interface used.
-    -->
+    <div id="taskbar">
+        <div id="taskbar-left">
+            <div class="empty-space"></div>
+            <div id="start-menu" class="posAni"></div>
+            <div id="search-menu" class="posAni"></div>
+            <div class="taskbar-divider"></div>
+        </div>
+        <div id="taskbar-center">
 
-    <script>
-        // Freestyle
-        if (localStorage.getItem("interface") == "freestyle") {
-            window.location.href = "freestyle";
-        }
-        // Compact
-        else if (localStorage.getItem("interface") == "compact") {
-            window.location.href = "compact";
-        }
-        // Auto
-        else if (localStorage.getItem("interface") == "auto") {
-            window.location.href = localStorage.getItem("interfaceLast");
-        }
-        // Empty localStorage
-        else {
-            window.location.href = "freestyle";
-        }
+        </div>
+        <div id="taskbar-right">
+            <div class="taskbar-divider"></div>
+            <div id="date-time">
+                <p id="timeIndicator"></p>
+                <p id="dateIndicator"></p>
+            </div>
+            <div class="empty-space"></div>
+        </div>
+    </div>
 
-        
-    </script>
+    <div id="sidebar">
 
+    </div>
+
+    <div id="display">
+
+    </div>
 </body>
 </html>
