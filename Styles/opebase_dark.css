@@ -1,4 +1,9 @@
+/*? Imports & Variables*/
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap');
+:root{
+    --ui-color: #242124; /* Color of the Taskbar and Sidebar */
+    --font-color: #ffffff; /* Color of the Text and Dividers */
+}
 
 /*? Static Styles*/
 /** Canvas*/
@@ -6,10 +11,7 @@ body {
     /*Font*/
     font-family: "Comfortaa", sans-serif;
     /*Background*/
-    background-image: url('/Assets/Wallpapers/placholder_desktop.png');
-    background-size: auto;
-    background-position: center;
-    background-repeat: no-repeat;
+    background-color: var(--ui-color);
     /*Layout*/
     margin: 0;
     display: grid;
@@ -23,16 +25,16 @@ body {
     grid-column: 2;
     grid-row: 2;
     height: 50px;
-    background-color: #242124;
-    box-shadow: 0px -5px 10px 0px #242124;
-    z-index: 1;
+    background-color: var(--ui-color);
+    box-shadow: 0px -5px 10px 0px var(--ui-color);
+    z-index: 2;
     display: flex;
     flex-direction: row;
     gap: 10px;
     align-items: center;
 }
 .taskbar-divider {
-    background-color: white;
+    background-color: var(--font-color);
     height: 25px;
     width: 1px;
 }
@@ -54,6 +56,13 @@ body {
     gap: 10px;
     align-items: center;
     margin-left: auto;
+}
+#toggle-sidebar{
+    width: 10px;
+    height: 40px;
+    background-color: #fcc200;
+    border-radius: 4px;
+    cursor: pointer;
 }
 #start-menu {
     height: 40px;
@@ -80,12 +89,12 @@ body {
     user-select: none;
 }
 #timeIndicator {
-    color: white;
+    color: var(--font-color);
     margin: 0;
     text-align: center;
 }
 #dateIndicator {
-    color: white;
+    color: var(--font-color);
     margin: 0;
     text-align: center;
 }
@@ -113,8 +122,8 @@ body {
 #sidebar {
     grid-row: 1 / span 2;
     width: 250px;
-    background-color: #242124;
-    box-shadow: 5px 0px 10px 0px #242124;
+    background-color: var(--ui-color);
+    box-shadow: 5px 0px 10px 0px var(--ui-color);
     z-index: 1;
     display: flex;
     flex-direction: column;
@@ -127,8 +136,10 @@ body {
 #display {
     grid-column: 2;
     grid-row: 1;
-    background-color: #ffffff50;
-    padding: 10px;
+    background-image: url('/Assets/Wallpapers/placholder_desktop.png');
+    background-size: auto;
+    background-position: center;
+    background-repeat: no-repeat;
     overflow: auto;
 }
 

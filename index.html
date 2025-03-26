@@ -13,7 +13,8 @@
     <script src="Library/highlight.min.js"></script>
 
     <!--? Other Scripts-->
-    <script src="JavaScripts/modeswitch.js"></script>
+    <script src="JavaScripts/loadLocal.js"></script>
+    <script src="JavaScripts/toggleSidebar.js"></script>
 </head>
 <body>
     <script src="JavaScripts/datetime.js"></script>
@@ -21,6 +22,7 @@
     <div id="taskbar">
         <div id="taskbar-left">
             <div class="empty-space"></div>
+            <div id="toggle-sidebar" class="posAni" onclick="toggleSidebar()"></div>
             <div id="start-menu" class="posAni"></div>
             <div id="search-menu" class="posAni"></div>
             <div class="taskbar-divider"></div>
@@ -45,5 +47,9 @@
     <div id="display">
 
     </div>
+
+    <script>
+        loadLocal();
+    </script>
 </body>
 </html>
