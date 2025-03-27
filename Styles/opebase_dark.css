@@ -1,0 +1,165 @@
+/*? Imports & Variables*/
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap');
+:root{
+    --ui-color: #232124; /* Color of the Taskbar and Sidebar */
+    --button-color: #2e2b2f; /* Color of the Buttons */
+    --font-color: #ffffff; /* Color of the Text and Dividers */
+}
+
+/*? Static Styles*/
+/** Canvas*/
+body {
+    /*Font*/
+    font-family: "Comfortaa", sans-serif;
+    /*Background*/
+    background-color: var(--ui-color);
+    /*Layout*/
+    margin: 0;
+    display: grid;
+    grid-template-columns: 250px auto;
+    grid-template-rows: 1fr 50px;
+    height: 100vh;
+}
+
+/** Taskbar*/
+#taskbar {
+    grid-column: 2;
+    grid-row: 2;
+    height: 50px;
+    background-color: var(--ui-color);
+    box-shadow: 0px -5px 10px 0px var(--ui-color);
+    z-index: 2;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+}
+.taskbar-divider {
+    background-color: var(--font-color);
+    height: 25px;
+    width: 1px;
+}
+#taskbar-left { /* Contains start menu and search menu */
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+}
+#taskbar-center { /* Contains open files and apps */
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+}
+#taskbar-right { /* Contains action buttons and time indicator */
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    margin-left: auto;
+}
+.button-shadow{
+    box-shadow: 0px 10px 10px 0px rgba(0,0,0,0.5);
+}
+.button-shadow-active{
+    box-shadow: 0px 10px 10px 0px rgba(40, 0, 60, 0.5);
+}
+#toggle-sidebar{
+    width: 20px;
+    height: 40px;
+    background-color: var(--button-color);
+    background-image: url("/Assets/Icons/toggle_sidebar.png");
+    background-size: 150%;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out, filter 0.15s ease-in-out;
+}
+#start-menu {
+    height: 40px;
+    width: 40px;
+    background-color: var(--button-color);
+    border-radius: 10px;
+    cursor: pointer;
+}
+#search-menu {
+    height: 40px;
+    width: 40px;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: var(--button-color);
+    background-image: url("/Assets/Icons/search.png");
+    background-size: 80%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+#date-time {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    user-select: none;
+}
+#timeIndicator {
+    color: var(--font-color);
+    margin: 0;
+    text-align: center;
+}
+#dateIndicator {
+    color: var(--font-color);
+    margin: 0;
+    text-align: center;
+}
+.actionButton {
+    height: 25px;
+    width: 25px;
+    background-color: #444444;
+    border-radius: 6.25px;
+    cursor: pointer;
+}
+#switch-button {
+    background-image: url("/Assets/Icons/mode_switch.png");
+    background-size: 90%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+#split-button {
+    background-image: url("/Assets/Icons/split_view.png");
+    background-size: 80%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/** Sidebar*/
+#sidebar {
+    grid-row: 1 / span 2;
+    width: 250px;
+    background-color: var(--ui-color);
+    box-shadow: 5px 0px 10px 0px var(--ui-color);
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    padding-top: 10px;
+}
+
+/** Display*/
+#display {
+    grid-column: 2;
+    grid-row: 1;
+    background-image: url('/Assets/Wallpapers/placholder_desktop.png');
+    background-size: auto;
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow: auto;
+}
+
+/*? Animations*/
+.buttonAni {
+    filter: brightness(1);
+    transition: filter 0.15s ease-in-out;
+}
+.buttonAni:hover {
+    filter: brightness(1.2);
+}

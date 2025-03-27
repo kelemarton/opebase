@@ -6,15 +6,14 @@
     <title>Ope'Base</title>
 
     <!--? Theme-->
-    <link id="css-theme" rel="stylesheet" href="Styles/opebase_dark.css">
+    <link id="css-theme" rel="stylesheet" href="Styles/compact_dark.css">
 
     <!--? Highlight.js Import-->
     <link rel="stylesheet" href="Library/styles/atom-one-dark.min.css">
     <script src="Library/highlight.min.js"></script>
 
     <!--? Other Scripts-->
-    <script src="JavaScripts/loadLocal.js"></script>
-    <script src="JavaScripts/toggleSidebar.js"></script>
+    <script src="JavaScripts/modeswitch.js"></script>
 </head>
 <body>
     <script src="JavaScripts/datetime.js"></script>
@@ -22,9 +21,8 @@
     <div id="taskbar">
         <div id="taskbar-left">
             <div class="empty-space"></div>
-            <div id="toggle-sidebar" class="button-shadow buttonAni" onclick="toggleSidebar()"></div>
-            <div id="start-menu" class="button-shadow buttonAni"></div>
-            <div id="search-menu" class="button-shadow buttonAni"></div>
+            <div id="start-menu" class="posAni"></div>
+            <div id="search-menu" class="posAni"></div>
             <div class="taskbar-divider"></div>
         </div>
         <div id="taskbar-center">
@@ -32,6 +30,8 @@
         </div>
         <div id="taskbar-right">
             <div class="taskbar-divider"></div>
+            <div class="actionButton scaleAni" id="split-button"></div>
+            <div class="actionButton scaleAni" id="switch-button" onclick="modeSwitch();"></div>
             <div id="date-time">
                 <p id="timeIndicator"></p>
                 <p id="dateIndicator"></p>
@@ -47,9 +47,5 @@
     <div id="display">
 
     </div>
-
-    <script>
-        loadLocal();
-    </script>
 </body>
 </html>

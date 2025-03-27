@@ -1,0 +1,117 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap');
+
+/*? Static Styles*/
+/** Canvas*/
+body{
+    /*Font*/
+    font-family: "Comfortaa", sans-serif;
+    /*Background*/
+    background-image: url('/Assets/Wallpapers/placholder_desktop.png');
+    background-size: auto;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+/** Taskbar*/
+#taskbar{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 50px;
+    width: 100%;
+    background-color: #242124be;
+    backdrop-filter: blur(5px);
+    box-shadow: 0px -2px 10px 0px #242124be;
+    z-index: 1;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+}
+.taskbar-divider{
+    background-color: white;
+    height: 25px;
+    width: 1px;
+}
+#taskbar-left{ /* Contains start menu and search menu */
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+}
+#taskbar-center{ /* Contains open files and apps */
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+}
+#taskbar-right{ /* Contains action buttons and time indicator */
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    position: absolute;
+    right: 0;
+}
+#start-menu{
+    height: 40px;
+    width: 40px;
+    background-color: #987654;
+    border-radius: 10px;
+    cursor: pointer;
+}
+#search-menu{
+    height: 40px;
+    width: 40px;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: #4169e1;
+    background-image: url("/Assets/Icons/search.png");
+    background-size: 80%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+#date-time{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 90px;
+}
+#timeIndicator{
+    color: white;
+    margin: 0;
+    text-align: center;
+}
+#dateIndicator{
+    color: white;
+    margin: 0;
+    text-align: center;
+}
+.actionButton{ /* A class for all action buttons to look the same. Can be overwritten with IDs. */
+    height: 25px;
+    width: 25px;
+    background-color: #444444;
+    border-radius: 6.25px;
+    cursor: pointer;
+}
+#switch-button{
+    background-image: url("/Assets/Icons/mode_switch.png");
+    background-size: 80%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/*? Animations*/
+.posAni{
+    transition: transform 0.25s ease-in-out;
+    transform: translateY(0px) scale(1);
+}
+.posAni:hover{
+    transform: translateY(-5px) scale(1.2);
+}
+.scaleAni{
+    transition: transform 0.25s ease-in-out;
+    transform: scale(1);
+}
+.scaleAni:hover{
+    transform: scale(1.1);
+}
