@@ -155,6 +155,54 @@ body {
     overflow: auto;
 }
 
+/*? Windows*/
+.window {
+    position: absolute;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    min-width: 300px;
+    min-height: 200px;
+    overflow: hidden;
+}
+.window-header {
+    height: 40px;
+    background-color: #f0f0f0;
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    cursor: move;
+}
+.window-title {
+    flex: 1;
+    font-size: 14px;
+    color: #333;
+}
+.window-controls {
+    display: flex;
+}
+.window-control {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    margin-left: 8px;
+    cursor: pointer;
+}
+.minimize {
+    background-color: #ffbd44;
+}
+.maximize {
+    background-color: #00ca56;
+}
+.close {
+    background-color: #ff605c;
+}
+.window-content {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+}
+
 /*? Animations*/
 .buttonAni {
     filter: brightness(1);
