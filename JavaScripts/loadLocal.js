@@ -10,8 +10,12 @@ function applySidebarState() {
     if (sidebarState === "closed") {
         body.style.gridTemplateColumns = "0 auto";
         sidebar.style.width = "0px";
+        const toggleBtn = document.getElementById("toggle-sidebar");
+        toggleBtn.style.transform = "scaleX(-1)";
     } else {
         body.style.gridTemplateColumns = "250px auto";
         sidebar.style.width = "250px";
+        const toggleBtn = document.getElementById("toggle-sidebar");
+        toggleBtn.style.transform = "none";
     }
 }

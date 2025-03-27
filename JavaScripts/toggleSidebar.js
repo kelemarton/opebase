@@ -34,6 +34,10 @@ function toggleSidebar() {
         } else {
             // After animation completes, update localStorage.
             localStorage.setItem("sidebar-state", newWidth > 0 ? "open" : "closed");
+
+            // After animation completes:
+            const toggleBtn = document.getElementById("toggle-sidebar");
+            toggleBtn.style.transform = newWidth > 0 ? "none" : "scaleX(-1)";
         }
     }
     requestAnimationFrame(animate);
