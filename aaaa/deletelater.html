@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Load and Highlight Code</title>
+    <link rel="stylesheet" href="Library/styles/atom-one-dark.min.css">
+    <script src="Library/highlight.min.js"></script>
+    <style>
+        /* Ensure the code block preserves whitespace */
+        pre code {
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <h1>Code Viewer</h1>
+    <pre id="codeBlock"><code></code></pre>
+
+    <script>
+        // Fetch the code file and insert it into the code block
+        fetch('User/Files/example.html')
+        .then(response => {
+            if (!response.ok) {
+            throw new Error('Network response was not ok: ' + response.statusText);
+            }
+            return response.text();
+        })
+        .then(text => {
+            const codeElement = document.querySelector('#codeBlock code');
+            // Use textContent to preserve the original formatting (including newlines)
+            codeElement.textContent = text;
+            // Manually trigger highlight.js on the updated element
+            hljs.highlightElement(codeElement);
+        })
+        .catch(error => console.error('Error fetching the file:', error));
+    </script>
+</body>
+</html>

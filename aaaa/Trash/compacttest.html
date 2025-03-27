@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Div Template</title>
+  <style>
+    /* Reset margins and ensure full height */
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+    /* Create a grid container that fills the screen */
+    .container {
+      display: grid;
+      grid-template-columns: 250px auto;
+      grid-template-rows: auto 60px;
+      height: 100%;
+    }
+    /* Sidepanel spans both rows on the left */
+    .sidepanel {
+      grid-row: 1 / span 2;
+      background-color: #f0f0f0;
+      padding: 1em;
+      box-sizing: border-box;
+    }
+    /* Display area in the top-right */
+    .display {
+      grid-column: 2;
+      grid-row: 1;
+      background-color: #fff;
+      padding: 1em;
+      box-sizing: border-box;
+    }
+    /* Taskbar at the bottom-right */
+    .taskbar {
+      grid-column: 2;
+      grid-row: 2;
+      background-color: #ddd;
+      padding: 1em;
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="sidepanel">Sidepanel</div>
+    <div class="display">Display</div>
+    <div class="taskbar">Taskbar</div>
+  </div>
+</body>
+</html>
