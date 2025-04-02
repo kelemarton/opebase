@@ -66,13 +66,18 @@ function findWindowData(idOrElement) {
  * @returns {HTMLElement|null} The created window element or null if exists.
  */
 export function createWindow(id, title, content, displayEl) {
+    if (!displayEl) {
+        console.error("createWindow called without a valid displayEl");
+        return null;
+    }
     if (windows[id]) {
         if (!id.startsWith('debug_')) { console.warn(`Window with id ${id} already exists. Focusing instead.`); }
         focusWindow(id); // Focus existing
         return windows[id].element;
     }
 
-    // Create basic element structure, passing bound handlers
+    // 1. Create basic element structure using element.js
+    // This should now create all 4 resizer divs based on the previous update to element.js
     const win = createWindowElement(
         id, title, content,
         minimizeWindow, // Pass reference to windowManager's function
@@ -80,41 +85,66 @@ export function createWindow(id, title, content, displayEl) {
         closeWindow     // Pass reference
     );
 
-    // Set initial styles and state
+    // 2. Set initial styles and state
     win.style.zIndex = incrementZIndex();
-    win.style.width = '400px'; win.style.height = '300px';
+    win.style.width = '400px'; win.style.height = '300px'; // Example initial size
     const offset = (Object.keys(windows).length % 10) * 20;
     win.style.top = `${50 + offset}px`; win.style.left = `${50 + offset}px`;
     win.style.opacity = '0'; win.style.transform = 'scale(0.8)';
 
-    // Attach interaction listeners using imported functions
+    // 3. Attach interaction listeners
     const header = win.querySelector('.window-header');
-    const resizer = win.querySelector('.resizer.bottom-right');
-    if (header) attachDragHandler(header);
-    if (resizer) attachResizeHandler(resizer);
-    // Focus on click anywhere on the window
+    // *** CORRECTION START ***
+    // Use querySelectorAll to get a NodeList of ALL elements with the 'resizer' class
+    const resizers = win.querySelectorAll('.resizer');
+    // *** CORRECTION END ***
+
+    if (header) {
+        attachDragHandler(header); // Attach drag to header
+    }
+
+    // *** CORRECTION START ***
+    // Pass the entire NodeList (all found resizer elements) to attachResizeHandler
+    if (resizers && resizers.length > 0) {
+         console.log(`Attaching resize handlers to ${resizers.length} elements for window ${id}`); // Debug log
+        attachResizeHandler(resizers);
+    } else {
+        console.warn(`Did not find any .resizer elements for window ${id}`);
+    }
+    // *** CORRECTION END ***
+
+
+    // 4. Add focus listener to the main window element
     win.addEventListener('mousedown', () => focusWindow(win));
 
-    // Create taskbar item using imported function
+    // 5. Create taskbar item
     const taskbarItem = createTaskbarItem(id, title); // Assumes taskbar.js adds it to DOM
 
-    // Store window data
-    windows[id] = { element: win, taskbarItem: taskbarItem, isMinimized: false, isMaximized: false, originalRect: null };
+    // 6. Store window data
+    windows[id] = {
+        element: win,
+        taskbarItem: taskbarItem,
+        isMinimized: false,
+        isMaximized: false,
+        originalRect: null
+    };
 
-    // Add to display and trigger animation
+    // 7. Add to display and trigger animation
     displayEl.appendChild(win);
     requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-            if(windows[id]) { // Check if still exists
-                win.style.opacity = '1'; win.style.transform = 'scale(1)';
+            if(windows[id]) { // Check if still exists (wasn't closed immediately)
+                win.style.opacity = '1';
+                win.style.transform = 'scale(1)';
             }
         });
     });
 
+    // 8. Set as active and ensure bounds
     setActiveWindow(win); // Internal function to set active state
     keepWithinBounds(win, displayEl); // Apply bounds check
 
-    return win;
+    return win; // Return the created window element
 }
 
 
@@ -221,95 +251,87 @@ export function focusWindow(idOrElement) {
 export function closeWindow(idOrElement) {
     const win = findWindowElement(idOrElement);
     const winData = findWindowData(win);
-    // Get ID early and check for its existence in windows object
     const id = win?.dataset?.windowId;
 
-    // Prevent closing if no valid window/data, or already animating closing/minimizing
+    // Guard clause: Check if window/data exists and isn't already closing/minimizing
     if (!win || !winData || !id || !windows[id] || win.classList.contains('closing') || win.classList.contains('minimizing')) {
-        console.warn(`closeWindow called on invalid or animating window: ${idOrElement}`);
         return;
     }
 
+    // ***** START CHANGE *****
+    // --- Remove Taskbar Item Immediately ---
+    // Regardless of whether the window is minimized or visible, remove the taskbar item now.
+    winData.taskbarItem?.remove();
+    // Important: Nullify the reference in the state so cleanup doesn't try to remove it again
+    if (winData) {
+        winData.taskbarItem = null;
+    }
+    // ***** END CHANGE *****
 
-    // --- NEW: Handle Minimized Window Directly ---
+
+    // --- Handle Minimized Window ---
     if (winData.isMinimized) {
-        // No animation needed/possible as element is display:none
-        console.log(`Closing minimized window directly: ${id}`); // Optional debug log
-
-        // 1. Remove the window element from the DOM immediately
+        // Taskbar item is already removed above.
+        // Just remove the window element and state data.
         win.remove();
-
-        // 2. Remove the corresponding taskbar item
-        // Use optional chaining just in case taskbarItem is missing
-        winData.taskbarItem?.remove();
-
-        // 3. Delete the window's state data
         delete windows[id];
-
-        // 4. If this somehow happened to be the 'activeWindow' (unlikely for minimized), clear it and find a new one
         if (activeWindow === win) {
             activeWindow = null;
-            findTopWindowAndFocus(); // Find the next top-most visible window
+            findTopWindowAndFocus();
         }
-
-        // 5. Exit the function early, skipping the animation logic below
-        return;
+        return; // Exit early, no animation needed for window
     }
-    // --- END NEW SECTION ---
+    // --- END Minimized Handling ---
 
 
-    // --- Existing Animation Logic (Only runs if NOT minimized) ---
+    // --- Animation Logic for VISIBLE Windows ---
+
+    // Prevent interaction during close
+    win.style.pointerEvents = 'none';
 
     // Clean up potentially interfering styles/classes
     win.classList.remove('is-dragging', 'is-resizing');
     win.style.removeProperty('--minimize-translate-x');
     win.style.removeProperty('--minimize-translate-y');
 
-    // Add 'closing' class to trigger CSS transition
+    // Add 'closing' class to trigger window CSS transition
     win.classList.add('closing');
+    // (Taskbar item class addition removed)
 
-    // Define the cleanup function (remains largely the same)
+
+    // Define the cleanup function (runs after window animation)
     const cleanup = (event) => {
-        // IMPORTANT: Ensure the event fired on the window itself
+        // Ensure the event fired on the window itself
         if (event && event.target !== win) return;
 
-        // Double-check if the window state still exists before cleaning up
-        // (Could have been closed by another means rapidly)
+        // Check if state still exists (safety check)
         if (windows[id]) {
-            win.remove(); // Remove from DOM
-            winData.taskbarItem?.remove(); // Remove taskbar item
+            win.remove(); // Remove window from DOM
+            // (Taskbar item removal moved earlier)
             delete windows[id]; // Delete state
 
             if (activeWindow === win) {
                 activeWindow = null;
                 findTopWindowAndFocus();
             }
-        } else {
-            // If state is already gone, just ensure listeners are removed
-             console.warn(`Cleanup called for window ${id}, but state already deleted.`);
         }
-
-        // Remove listeners AFTER potential cleanup
+        // Remove listeners
         win.removeEventListener('transitionend', cleanup);
         win.removeEventListener('transitioncancel', cleanup);
     };
 
-    // Listen for the transition to end OR cancel
+    // Listen for the WINDOW's transition to end OR cancel
     win.addEventListener('transitionend', cleanup, { once: true });
     win.addEventListener('transitioncancel', cleanup, { once: true });
 
-    // Safety Timeout: If transitionend doesn't fire after a reasonable time, force cleanup
-    // Adjust time slightly longer than the CSS transition duration (0.25s)
+    // Safety Timeout (remains the same)
     setTimeout(() => {
-        // Check if the window *still* exists in the DOM and state
-        // (cleanup might have already run via transitionend/cancel)
         if (document.body.contains(win) && windows[id] && win.classList.contains('closing')) {
-            console.warn(`Close transition timed out for window ${id}. Forcing cleanup.`);
-            cleanup(null); // Call cleanup manually (pass null as event)
+            cleanup(null);
         }
-    }, 400); // e.g., 250ms transition + 150ms buffer
+    }, 400); // Adjust time slightly longer than the CSS transition duration
 
-}
+} // end of closeWindow
 
 export function minimizeWindow(idOrElement) {
     const win = findWindowElement(idOrElement);
