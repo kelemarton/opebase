@@ -1,3 +1,0 @@
-This is a Test
-Here is a new line
-   A sentence after 3 spaces
