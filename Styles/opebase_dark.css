@@ -3,6 +3,7 @@
 :root{
     --ui-color: #232124; /* Color of the Taskbar and Sidebar */
     --button-color: #2e2b2f; /* Color of the Buttons */
+    --higlight-color: #9457eb; /* Color of the Higlights */
     --font-color: #ffffff; /* Color of the Text and Dividers */
 }
 
@@ -17,17 +18,17 @@ body {
     margin: 0;
     display: grid;
     grid-template-columns: 250px auto;
-    grid-template-rows: 1fr 50px;
+    grid-template-rows: 50px 1fr;
     height: 100vh;
 }
 
 /** Taskbar*/
 #taskbar {
     grid-column: 2;
-    grid-row: 2;
+    grid-row: 1;
     height: 50px;
     background-color: var(--ui-color);
-    box-shadow: 0px -5px 10px 0px var(--ui-color);
+    box-shadow: 0px 5px 10px 0px var(--ui-color);
     z-index: 2;
     display: flex;
     flex-direction: row;
@@ -50,6 +51,8 @@ body {
     flex-direction: row;
     gap: 10px;
     align-items: center;
+    overflow-x: auto;
+    overflow-y: hidden;
 }
 #taskbar-right { /* Contains action buttons and time indicator */
     display: flex;
@@ -230,13 +233,248 @@ body {
 /** Display*/
 #display {
     grid-column: 2;
-    grid-row: 1;
-    background-image: url('/Assets/Wallpapers/placholder_desktop.png');
+    grid-row: 2;
+    position: relative;
+    /*background-image: url('/Assets/Wallpapers/placholder_desktop.png');*/
+    background-color: white;
     background-size: auto;
     background-position: center;
     background-repeat: no-repeat;
-    overflow: auto;
+    overflow: hidden;
 }
+
+/*? Windows*/
+/* Add these styles to your existing CSS file or a <style> tag */
+
+/*? Windows Additions */
+.window {
+    /* ... other window styles ... */
+    position: absolute;
+    background-color: #3a363e;
+    border: 1px solid #555;
+    border-radius: 8px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+    min-width: 250px;
+    min-height: 150px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    color: var(--font-color);
+
+    /* --- Base Transitions (for Open, Max/Restore, Close, Minimize) --- */
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    transition: opacity 0.25s ease-out,
+                transform 0.25s ease-out,
+                width 0.3s ease-in-out, /* For maximize/restore */
+                height 0.3s ease-in-out, /* For maximize/restore */
+                top 0.3s ease-in-out,    /* For maximize/restore */
+                left 0.3s ease-in-out;   /* For maximize/restore */
+}
+
+.window-header {
+    height: 30px;
+    background-color: #2e2b2f; /* Slightly different header color */
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    cursor: move; /* Indicate draggability */
+    border-bottom: 1px solid #555;
+    flex-shrink: 0; /* Prevent header from shrinking */
+    user-select: none; /* Prevent text selection during drag */
+}
+
+.window-title {
+    flex-grow: 1; /* Take available space */
+    font-size: 14px;
+    white-space: nowrap; /* Prevent title wrapping */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Add ... if title is too long */
+}
+
+.window-controls {
+    display: flex;
+    gap: 8px;
+}
+
+.window-control {
+    width: 12px;
+    height: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.minimize { background-color: #ffbd44; }
+.maximize { background-color: #00ca56; }
+.close    { background-color: #ff605c; }
+
+.minimize:hover { background-color: #ffd170; }
+.maximize:hover { background-color: #33d47a; }
+.close:hover    { background-color: #ff8a87; }
+
+.window-content {
+    flex-grow: 1; /* Take remaining space */
+    padding: 10px;
+    overflow: auto; /* Allow content scrolling */
+    background-color: #4a464e; /* Content area background */
+}
+
+/* --- Resizing Handles (Optional but Recommended) --- */
+.resizer {
+    position: absolute;
+    width: 10px;  /* Adjust size as needed */
+    height: 10px; /* Adjust size as needed */
+    background: transparent; /* Invisible, relies on cursor */
+    /* Add z-index if needed to ensure they are clickable over content near edges */
+    /* z-index: 1; */
+}
+
+.resizer.bottom-right {
+    bottom: 0;
+    right: 0;
+    cursor: nwse-resize; /* Diagonal */
+    background-color: var(--button-color);
+    border-radius: 3px;
+    opacity: 0.6;
+}
+
+/* NEW Styles */
+.resizer.bottom-left {
+    bottom: 0;
+    left: 0;
+    cursor: nesw-resize; /* Opposite diagonal */
+}
+
+.resizer.top-right {
+    top: 0;
+    right: 0;
+    cursor: nesw-resize; /* Opposite diagonal */
+}
+
+.resizer.top-left {
+    top: 0;
+    left: 0;
+    cursor: nwse-resize; /* Diagonal */
+}
+
+
+/* --- Taskbar Item --- */
+.taskbar-item {
+    background-color: var(--button-color);
+    color: var(--font-color);
+    height: 40px;
+    max-width: 200px;
+    border-radius: 10px;
+    box-shadow: 0px 10px 10px 0px rgba(0,0,0,0.5);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Changed from center */
+    font-size: 12px;
+    font-weight: bold;
+    user-select: none;
+    flex-shrink: 0;
+    filter: brightness(1);
+    transition: filter 0.15s ease-in-out, box-shadow 0.2s ease;
+
+    /* --- Adjustments for close button --- */
+    padding: 0 30px 0 15px; /* More right padding */
+    position: relative;     /* Crucial for positioning child */
+    width: auto;            /* Allow natural width based on content */
+    overflow: visible;      /* Allow button to slightly overflow if needed */
+    /* --- End Adjustments --- */
+}
+
+
+/* ... existing taskbar-item states (.active, .minimized, :hover, .dragging, .drag-over) ... */
+.taskbar-item.active {
+    box-shadow: 0px 10px 10px 0px rgba(40, 0, 60, 0.5);
+    border: none;
+}
+
+.taskbar-item.minimized {
+    opacity: 0.6;
+    filter: blur(1px);
+    box-shadow: 0px 0px 0px 0px rgba(40, 0, 60, 0.5);
+}
+
+.taskbar-item:hover {
+    filter: brightness(1.2);
+}
+
+.taskbar-item.dragging {
+    opacity: 0.4;
+    cursor: grabbing;
+}
+
+.taskbar-item.drag-over-before {
+    /* Indicate insertion point *before* this item */
+    box-shadow: inset 3px 0 0 0 var(--higlight-color), 0px 10px 10px 0px rgba(40, 0, 60, 0.5); /* Inset left border + existing active shadow */
+}
+
+.taskbar-item.drag-over-after {
+    /* Indicate insertion point *after* this item */
+     box-shadow: inset -3px 0 0 0 var(--higlight-color), 0px 10px 10px 0px rgba(40, 0, 60, 0.5); /* Inset right border + existing active shadow */
+}
+
+.taskbar-item-close {
+    position: absolute;
+    top: 50%;             /* Center vertically */
+    right: 8px;           /* Position from the right edge */
+    transform: translateY(-50%); /* Fine-tune vertical centering */
+    width: 16px;
+    height: 16px;
+    background-color: rgba(255, 255, 255, 0.1); /* Subtle background */
+    color: var(--font-color);
+    border-radius: 5px;   /* Make it circular */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;      /* Adjust size of 'X' */
+    line-height: 1;       /* Prevent extra spacing */
+    font-weight: bold;
+    cursor: pointer;
+    opacity: 0.7;         /* Slightly transparent by default */
+    transition: background-color 0.15s ease, opacity 0.15s ease, transform 0.1s ease;
+}
+
+.taskbar-item-close:hover {
+    background-color: #ff605c; /* Use close button red on hover */
+    color: #500; /* Darker text */
+    opacity: 1;
+    transform: translateY(-50%) scale(1.1); /* Slightly larger on hover */
+}
+
+.taskbar-item-close:active {
+    background-color: #d13c38; /* Darker red when clicked */
+    transform: translateY(-50%) scale(1);   /* Back to normal size on click */
+}
+
+.window.is-dragging,
+.window.is-resizing {
+    transition: none !important; /* Override base transitions */
+}
+
+/* --- State for closing/minimizing animation --- */
+.window.closing,
+.window.minimizing {
+    opacity: 0 !important;
+    transform: scale(0.85) translateY(30px) !important;
+    pointer-events: none; /* Prevent interaction during animation */
+}
+
+/* Maximized state - KEEP AS IS */
+.window.maximized {
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 0;
+    border: none;
+}
+.window.maximized .window-header { border-radius: 0; }
+.window.maximized .resizer { display: none; }
 
 /*? Animations*/
 .buttonAni {
@@ -246,5 +484,3 @@ body {
 .buttonAni:hover {
     filter: brightness(1.2);
 }
-
-
