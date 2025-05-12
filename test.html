@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="file" id="folderInput" webkitdirectory multiple>
+    <script>
+      async function keresFajlokban(keresettKifejezes) {
+          return new Promise((resolve) => {
+                const input = document.getElementById('folderInput');
+                      const files = input.files;
+                            const talalatok = [];
+
+                                  let feldolgozottFajlok = 0;
+
+                                        Array.from(files).forEach(file => {
+                                                const reader = new FileReader();
+
+                                                        reader.onload = function(e) {
+                                                                  const tartalom = e.target.result;
+                                                                            if (tartalom.includes(keresettKifejezes)) {
+                                                                                        talalatok.push(file.webkitRelativePath);
+                                                                                                  }
+                                                                                                            feldolgozottFajlok++;
+                                                                                                                      if (feldolgozottFajlok === files.length) {
+                                                                                                                                  resolve(talalatok);
+                                                                                                                                            }
+                                                                                                                                                    };
+
+                                                                                                                                                            reader.onerror = function() {
+                                                                                                                                                                      feldolgozottFajlok++;
+                                                                                                                                                                                if (feldolgozottFajlok === files.length) {
+                                                                                                                                                                                            resolve(talalatok);
+                                                                                                                                                                                                      }
+                                                                                                                                                                                                              };
+
+                                                                                                                                                                                                                      reader.readAsText(file);
+                                                                                                                                                                                                                            });
+                                                                                                                                                                                                                                });
+                                                                                                                                                                                                                                  }
+
+                                                                                                                                                                                                                                    // Használat:
+                                                                                                                                                                                                                                      document.getElementById('folderInput').addEventListener('change', async () => {
+                                                                                                                                                                                                                                          const eredmenyLista = await keresFajlokban('opebase');
+                                                                                                                                                                                                                                              console.log('Találatok:', eredmenyLista);
+                                                                                                                                                                                                                                                });
+                                                                                                                                                                                                                                                </script>
+</body>
+</html>
