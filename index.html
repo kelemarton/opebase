@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -19,13 +19,15 @@
 </head>
 <body>
     <script src="JavaScripts/datetime.js"></script>
+    <script src="JavaScripts/search-bar.js"></script>
+    <script src="JavaScripts/start-menu.js"></script>
 
     <div id="taskbar">
         <div id="taskbar-left">
             <div class="empty-space"></div>
             <div id="toggle-sidebar" class="button-shadow buttonAni" onclick="toggleSidebar()"></div>
-            <div id="start-menu" class="button-shadow buttonAni"></div>
-            <div id="search-menu" class="button-shadow buttonAni"></div>
+            <div id="start-menu" onclick="openStartMenu()" class="button-shadow buttonAni"></div>
+            <div id="search-menu" onclick="openSearch()" class="button-shadow buttonAni"></div>
             <div class="taskbar-divider"></div>
         </div>
         <div id="taskbar-center">
@@ -42,8 +44,11 @@
     </div>
 
     <div id="sidebar">
-
+        <div id="treeContainer" class="tree"></div>
+        <button id="selectBtn">Mappa kiválasztása</button>
+        <div id="treeContainer" class="tree"></div>
     </div>
+    <script src="JavaScripts/tree.js"></script>
 
     <div id="display">
 
