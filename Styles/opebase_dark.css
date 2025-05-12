@@ -83,6 +83,10 @@ body {
     height: 40px;
     width: 40px;
     background-color: var(--button-color);
+    background-image: url("/Assets/Icons/startmenu.png");
+    background-size: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
     border-radius: 10px;
     cursor: pointer;
 }
@@ -319,6 +323,23 @@ body {
     overflow: auto; /* Allow content scrolling */
     background-color: #4a464e; /* Content area background */
 }
+#display .window-content pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    margin: 0;
+    font-family: Consolas, 'Courier New', monospace;
+    /* Optional: Add some padding inside the pre */
+    padding: 10px;
+    /* Optional: Add scrollbars if content exceeds window */
+    overflow: auto;
+    /* Ensure it takes available space */
+    height: 100%;
+    box-sizing: border-box; /* Include padding in height/width */
+}
+#display .window-content code {
+   display: block; /* Or inline-block depending on desired layout */
+   /* Add specific code styling */
+}
 
 /* --- Resizing Handles (Optional but Recommended) --- */
 .resizer {
@@ -483,4 +504,278 @@ body {
 }
 .buttonAni:hover {
     filter: brightness(1.2);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*Image, Audio, Video*/
+/* ===========================
+   Tree View Styles
+   =========================== */
+
+#treeContainer {
+  font-family: sans-serif;
+  font-size: 14px;
+  padding: 10px;
+  /* Optional: Limit height and add scroll */
+  /* max-height: 80vh; */
+  /* overflow-y: auto; */
+}
+
+.tree-root {
+  padding-left: 0;
+  list-style: none;
+  margin: 0;
+}
+
+.tree-root ul {
+  padding-left: 20px; /* Indentation for nested levels */
+  list-style: none;
+  margin: 0;
+  border-left: 1px dotted #ccc; /* Guide line */
+}
+
+.tree-root li {
+  padding: 3px 0;
+  position: relative;
+}
+
+/* Style the lines connecting items */
+.tree-root li::before {
+  content: "";
+  position: absolute;
+  top: 10px; /* Adjust vertical position */
+  left: -10px; /* Position relative to padding */
+  width: 10px;
+  height: 1px;
+  border-top: 1px dotted #ccc;
+}
+.tree-root li:last-child::after {
+    /* Optional: Hide line connector for the last item in a list */
+    /* content: ""; */
+    /* position: absolute; */
+    /* top: 10px; */
+    /* bottom: 0; */
+    /* left: -10px; */
+    /* width: 1px; */
+    /* background-color: white; */ /* Match background */
+}
+
+
+.folder, .file {
+  cursor: pointer;
+  user-select: none; /* Prevent text selection on click */
+  display: inline-block; /* Keep icon and text together */
+  padding: 2px 4px;
+  border-radius: 3px;
+  transition: background-color 0.15s ease;
+}
+
+.folder:hover, .file:hover {
+  background-color: #e8f0fe; /* Light blue highlight on hover */
+}
+
+.folder .toggle {
+  display: inline-block;
+  width: 1em; /* Space for the toggle icon */
+  text-align: center;
+  margin-right: 3px;
+  transition: transform 0.15s ease-in-out;
+  color: #666;
+}
+
+.directory-li.open > .folder .toggle {
+  transform: rotate(90deg);
+}
+
+/* Hide nested lists by default */
+.directory-li > ul {
+  display: none;
+  margin-top: 4px; /* Space between folder and its contents */
+}
+
+/* Show nested lists when the folder is open */
+.directory-li.open > ul {
+  display: block;
+}
+
+/* Optional: Class for lists explicitly hidden */
+.hidden {
+  display: none !important;
+}
+
+/* Optional: Loading indicator */
+.directory-li.loading > .folder .toggle {
+  /* Replace toggle with a spinner or different icon */
+  /* Example: content: '⏳'; */
+  color: #aaa;
+  animation: spin 1s linear infinite; /* Requires @keyframes spin */
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+
+/* ===========================
+   Window Content Styles
+   =========================== */
+
+/* Container for text files (using <pre>) */
+/* Ensure highlight.js theme handles pre/code styling */
+/* You might need to ensure the <pre> fills the window */
+#display .window-content pre {
+    margin: 0;
+    padding: 10px;
+    box-sizing: border-box;
+    overflow: auto;
+    width: 100%;
+    height: 100%;
+    /* Monospace font is essential for code */
+    font-family: Consolas, 'Courier New', monospace;
+    font-size: 13px; /* Adjust as needed */
+    /* These might be set by your highlight.js theme */
+    /* background-color: #f8f8f8; */
+    /* color: #333; */
+    white-space: pre-wrap; /* Preserve whitespace and wrap lines */
+    word-wrap: break-word;
+}
+
+/* General container for non-text previews */
+.image-viewer-container,
+.audio-player-container,
+.video-player-container,
+.file-info-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Center content vertically and horizontally */
+    overflow: hidden;
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: #f0f0f0; /* Default background */
+}
+
+/* Image viewer specific styles */
+.image-viewer-container {
+    background-color: #e0e0e0;
+    /* Checkerboard background for transparency */
+    background-image: linear-gradient(45deg, #f5f5f5 25%, transparent 25%),
+                      linear-gradient(-45deg, #f5f5f5 25%, transparent 25%),
+                      linear-gradient(45deg, transparent 75%, #f5f5f5 75%),
+                      linear-gradient(-45deg, transparent 75%, #f5f5f5 75%);
+    background-size: 20px 20px;
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+}
+
+.image-viewer-image {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+    object-fit: contain; /* Scale image down to fit container */
+}
+
+/* Audio player specific styles */
+.audio-player-container {
+    justify-content: space-around; /* Space out title and player */
+}
+.audio-player {
+    width: 90%; /* Make audio player reasonably wide */
+    max-width: 400px; /* Prevent excessive width */
+}
+
+/* Video player specific styles */
+.video-player-container {
+    background-color: #222; /* Dark background often better for video */
+    justify-content: space-between; /* Push title down */
+}
+.video-player {
+    max-width: 100%;
+    /* Allow video to grow, respecting aspect ratio (set by browser) */
+    max-height: calc(100% - 30px); /* Leave space for title */
+    display: block;
+}
+
+/* Common style for media titles */
+.media-title {
+    padding: 5px 10px;
+    font-size: 0.9em;
+    color: #555; /* Darker text on light background */
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 95%;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    flex-shrink: 0; /* Prevent title from shrinking */
+}
+.video-player-container .media-title {
+    color: #ccc; /* Lighter text on dark background */
+}
+
+
+/* Fallback/Info container styles */
+.file-info-container {
+    font-family: sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    align-items: flex-start; /* Align text to the top-left */
+    justify-content: flex-start;
+    background-color: #f8f8f8;
+}
+.file-info-title {
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+    color: #333;
+}
+.file-info-container.error {
+    background-color: #fff0f0;
+}
+.file-info-container.error .file-info-title {
+    color: #cc0000;
 }
