@@ -8,29 +8,45 @@ function openStartMenu() {
         div.id = element;
         div.style.position = "absolute";
         div.style.height = "50px";
-        div.style.width = "100px";
-        div.style.borderRadius = "60px";
-        div.style.backgroundColor = "white";
-        div.style.top = `calc(${startMenuButton ? startMenuButton.getBoundingClientRect().top + 10 : 0}px - ${75 + index * 60}px)`; // Adjusted to appear just above the start menu
+        div.style.width = "140px";
+        div.style.borderRadius = "12px";
+        div.style.backgroundColor = "#f9f9f9";
+        div.style.boxShadow = "0 4px 12px rgba(0, 0, 0, 0.15)";
+        div.style.cursor = "pointer";
+        div.style.transition = "background-color 0.2s ease, transform 0.2s ease";
+        div.style.display = "flex";
+        div.style.alignItems = "center";
+        div.style.justifyContent = "center";
+        div.style.fontFamily = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+        div.style.fontSize = "16px";
+        div.style.fontWeight = "500";
+        div.style.color = "#333";
+        div.style.userSelect = "none";
+        div.style.top = `${startMenuButton ? startMenuButton.getBoundingClientRect().bottom + 15 + index * 60 : 0}px`;
         div.style.left = `${startMenuXCoord}px`;
-        div.onclick = function() {
-            window[element + "Click"]();
+
+        div.onmouseenter = () => {
+            div.style.backgroundColor = "#e0e0e0";
+            div.style.transform = "translateY(-2px)";
+        };
+        div.onmouseleave = () => {
+            div.style.backgroundColor = "#f9f9f9";
+            div.style.transform = "translateY(0)";
+        };
+
+        div.onclick = function () {
+            window[element + "Click"]?.();
             menuDivs.forEach(div => div.remove());
         };
 
-        const text = document.createElement("p");
-        text.textContent = element;
-        text.style.margin = "0px";
-        text.style.padding = "10px";
-        text.style.textAlign = "center";
-        text.style.width = "100%";
-        div.appendChild(text);
+        div.textContent = element;
 
         document.body.appendChild(div);
 
         return div;
     });
 }
+
 
 document.addEventListener("click", (e) => {
     if(!e.target.closest("#start-menu") && !e.target.closest("#Start") && !e.target.closest("#Settings")) {
@@ -43,9 +59,7 @@ function closeMenu() {
     menuDivs.forEach(div => div.remove());
 }
 
-function StartClick() {
-    console.log("Start clicked.");
-}
+
 
 (() => {
   // Inject CSS
@@ -159,6 +173,7 @@ function StartClick() {
   window.SettingsClick = function() {
     console.log('Settings clicked.');
 
+
     if (document.getElementById('settingsWindow')) return;
 
     // Overlay
@@ -204,6 +219,7 @@ function StartClick() {
       </select>
     `;
     form.appendChild(themeRow);
+
 
     // Fullscreen Mode toggle
     const fullRow = document.createElement('div');
@@ -251,7 +267,7 @@ function StartClick() {
     closeX.onclick = () => iconSelector.style.display = 'none';
     iconSelector.appendChild(closeX);
 
-    const iconList = ['icon1.png', 'icon2.png', 'icon3.png', 'icon4.png'];
+    const iconList = ['icon1.png'];
     iconList.forEach(filename => {
       const iconImg = document.createElement('img');
       iconImg.src = 'icons/' + filename;
