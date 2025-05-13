@@ -71,7 +71,7 @@ function closeMenu() {
       margin: 14px 0;
       gap: 14px;
       font-size: 1.15em;
-      color: #333;
+      color: #fff;
     }
 
     .setting-row img.icon {
@@ -82,7 +82,7 @@ function closeMenu() {
     #iconSelector {
       display: none;
       position: absolute;
-      background-color: #fafafa;
+      background-color:rgb(61, 61, 61);
       border: 1px solid #ddd;
       border-radius: 8px;
       padding: 12px;
@@ -102,7 +102,7 @@ function closeMenu() {
       right: 6px;
       cursor: pointer;
       font-size: 1.2em;
-      color: #666;
+      color: #fff;
     }
 
     #iconSelector img.icon-option {
@@ -134,7 +134,7 @@ function closeMenu() {
       position: relative;
       width: 480px;
       max-height: 85vh;
-      background-color: #fff;
+      background-color: rgb(39, 39, 39);
       border-radius: 12px;
       box-shadow: 0 8px 24px rgba(0,0,0,0.15);
       overflow-y: auto;
@@ -171,7 +171,7 @@ function closeMenu() {
 
   // SettingsClick function
   window.SettingsClick = function() {
-    console.log('Settings clicked.');
+    //console.log('Settings clicked.');
 
 
     if (document.getElementById('settingsWindow')) return;
@@ -186,8 +186,9 @@ function closeMenu() {
 
     // Title
     const title = document.createElement('h2');
-    title.textContent = '⚙️ Beállítások';
+    title.textContent = '⚙️ Settings';
     title.style.textAlign = 'center';
+    title.style.color = '#fff';
     settingsBox.appendChild(title);
 
     // Form
@@ -212,10 +213,10 @@ function closeMenu() {
     themeRow.className = 'setting-row';
     themeRow.innerHTML = `
       <span>🎨</span>
-      <label for='themeSelect'>Téma:</label>
+      <label for='themeSelect'>Theme:</label>
       <select id='themeSelect' disabled>
-        <option>Világos</option>
-        <option>Sötét</option>
+        <option>Dark</option>
+        <option>Light</option>
       </select>
     `;
     form.appendChild(themeRow);
@@ -226,10 +227,14 @@ function closeMenu() {
     fullRow.className = 'setting-row';
     fullRow.innerHTML = `
       <span>🖥️</span>
-      <label for='fullscreenToggle'>Teljes képernyő:</label>
-      <input type='checkbox' id='fullscreenToggle'>
+      <label for='fullscreenToggle'>Fullscreen:</label>
+      <input type='checkbox' disabled id='fullscreenToggle'>
     `;
     form.appendChild(fullRow);
+
+
+ 
+
 
     // Icon selector row
     const iconRow = document.createElement('div');
@@ -237,10 +242,11 @@ function closeMenu() {
     const selectedIcon = document.createElement('img');
     selectedIcon.id = 'selectedIcon';
     selectedIcon.className = 'icon';
-    selectedIcon.src = 'icons/default.png';
+    selectedIcon.src = 'assets/icons/startmenu.png'; // Default icon
 
     const iconBtn = document.createElement('button');
     iconBtn.type = 'button';
+    iconBtn.disabled = true;
     iconBtn.textContent = 'Ikon...';
     iconBtn.onclick = (e) => {
       e.stopPropagation();
@@ -328,3 +334,6 @@ function closeMenu() {
     });
   };
 })();
+
+
+
