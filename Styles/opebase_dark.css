@@ -1,486 +1,440 @@
-/*? Imports & Variables*/
+/* ==========================================================================
+   opeBase Dark Theme v.1.0 - CSS (Created by KeMarcY and mkaroly)
+   ========================================================================== */
+
+/*? Imports & Variables
+   ========================================================================== */
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap');
-:root{
-    --ui-color: #232124; /* Color of the Taskbar and Sidebar */
-    --button-color: #2e2b2f; /* Color of the Buttons */
-    --higlight-color: #9457eb; /* Color of the Higlights */
-    --font-color: #ffffff; /* Color of the Text and Dividers */
+
+/*NOTE: To make a simple recolor theme, it's enought to change the root variables!*/
+:root {
+    /*Background*/
+    --background-image: url('/Assets/Wallpapers/opeBase_wp1.png');
+
+    /* Main UI */
+    --start-menu-image: url('/Assets/Icons/startmenu.png');
+    --search-menu-image: url('/Assets/Icons/search.png');
+    --sidebar-menu-image: url('/Assets/Icons/toggle_sidebar.png');
+    --ui-color: #232124;
+    --button-color: #2e2b2f;
+    --button-shadow: 0px 0px 10px 0px var(--button-color);
+    --higlight-color: #9457eb;
+    --highlight-shadow: 0px 0px 10px 0px var(--higlight-color);
+    --higlight-color-bright: #bd9deb;
+    --highlight-shadow-bright: 0px 0px 10px 0px var(--higlight-color-bright);
+
+    /* Window Colors */
+    --window-border-color:          #555;
+    --window-header-color:          #2e2b2f;
+    --window-background-color:      #4a464e;
+    --transparency-texture-color:   #555;
+    --minimize-button:              #ffbd44;
+    --maximize-button:              #6495ed;
+    --close-button:                 #ff605c;
+    --minimize-button-hover:        #ffd170;
+    --maximize-button-hover:        #8cb1ed;
+    --close-button-hover:           #ff8a87;
+
+    /*Font*/
+    --font-color: #ffffff;
+    --font-family: "Comfortaa", sans-serif;
 }
 
-/*? Static Styles*/
-/** Canvas*/
+/*? Global Styles & Canvas
+   ========================================================================== */
 body {
-    /*Font*/
-    font-family: "Comfortaa", sans-serif;
-    /*Background*/
+    font-family: var(--font-family);
+    color: var(--font-color);
     background-color: var(--ui-color);
-    /*Layout*/
     margin: 0;
     display: grid;
     grid-template-columns: 250px auto;
     grid-template-rows: 50px 1fr;
     height: 100vh;
+    overflow: hidden;
 }
 
-/** Taskbar*/
+/*? Main Layout Structure
+   ========================================================================== */
+
+/** Taskbar (Tray)
+    -------------------------------------------------------------------------- */
 #taskbar {
     grid-column: 2;
     grid-row: 1;
     height: 50px;
     background-color: var(--ui-color);
     box-shadow: 0px 5px 10px 0px var(--ui-color);
-    z-index: 2;
+    z-index: 1000;
     display: flex;
-    flex-direction: row;
-    gap: 10px;
     align-items: center;
+    padding: 0 10px;
+    overflow: visible;
 }
+
+#taskbar-left,
+#taskbar-center,
+#taskbar-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 100%;
+}
+
+#taskbar-center {
+    flex-grow: 1;
+    overflow-x: auto;
+    overflow-y: visible;
+    padding-left: 10px;
+    padding-bottom: 10px;
+    margin-bottom: -10px;
+}
+
+#taskbar-right {
+    margin-left: auto;
+}
+
 .taskbar-divider {
     background-color: var(--font-color);
     height: 25px;
     width: 1px;
+    opacity: 0.5;
+    align-self: center;
 }
-#taskbar-left { /* Contains start menu and search menu */
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-    align-items: center;
-}
-#taskbar-center { /* Contains open files and apps */
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-    align-items: center;
-    overflow-x: auto;
-    overflow-y: hidden;
-}
-#taskbar-right { /* Contains action buttons and time indicator */
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-    align-items: center;
-    margin-left: auto;
-}
-.button-shadow{
-    box-shadow: 0px 10px 10px 0px rgba(0,0,0,0.5);
-}
-.button-shadow-active{
-    box-shadow: 0px 10px 10px 0px rgba(40, 0, 60, 0.5);
-}
-#toggle-sidebar{
-    width: 20px;
+
+#toggle-sidebar, #start-menu, #search-menu {
     height: 40px;
     background-color: var(--button-color);
-    background-image: url("/Assets/Icons/toggle_sidebar.png");
-    background-size: 150%;
     background-position: center;
     background-repeat: no-repeat;
+    cursor: pointer;
     border-radius: 4px;
-    cursor: pointer;
-    transition: transform 0.2s ease-in-out, filter 0.15s ease-in-out;
 }
-#start-menu {
-    height: 40px;
-    width: 40px;
-    background-color: var(--button-color);
-    border-radius: 10px;
-    cursor: pointer;
-}
-#search-menu {
-    height: 40px;
-    width: 40px;
-    border-radius: 10px;
-    cursor: pointer;
-    background-color: var(--button-color);
-    background-image: url("/Assets/Icons/search.png");
-    background-size: 80%;
-    background-position: center;
-    background-repeat: no-repeat;
-}
+#toggle-sidebar { width: 20px; background-image: url("/Assets/Icons/toggle_sidebar.png"); background-size: 150%; }
+#start-menu { width: 40px; background-image: url("/Assets/Icons/startmenu.png"); background-size: 100%; border-radius: 10px; }
+#search-menu { width: 40px; background-image: url("/Assets/Icons/search.png"); background-size: 80%; border-radius: 10px; }
+
+
 #date-time {
     display: flex;
     flex-direction: column;
     gap: 5px;
     user-select: none;
-}
-#timeIndicator {
-    color: var(--font-color);
-    margin: 0;
     text-align: center;
 }
-#dateIndicator {
-    color: var(--font-color);
-    margin: 0;
-    text-align: center;
-}
-.actionButton {
-    height: 25px;
-    width: 25px;
-    background-color: #444444;
-    border-radius: 6.25px;
-    cursor: pointer;
-}
-#switch-button {
-    background-image: url("/Assets/Icons/mode_switch.png");
-    background-size: 90%;
-    background-position: center;
-    background-repeat: no-repeat;
-}
-#split-button {
-    background-image: url("/Assets/Icons/split_view.png");
-    background-size: 80%;
-    background-position: center;
-    background-repeat: no-repeat;
-}
+#timeIndicator, #dateIndicator { color: var(--font-color); margin: 0; }
 
-/** Sidebar*/
+/** Sidebar
+    -------------------------------------------------------------------------- */
 #sidebar {
-    grid-row: 1 / span 2;
-    width: max-content;
-    background-color: var(--ui-color);
-    box-shadow: 5px 0px 10px 0px var(--ui-color);
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    align-items: center;
-    padding-top: 10px;
-    overflow: auto;
-    color: #ffffff;
-        
+    grid-row: 1 / span 2; grid-column: 1; width: 250px; max-width: 250px;
+    background-color: var(--ui-color); box-shadow: 5px 0px 10px 0px var(--ui-color);
+    z-index: 900; display: flex; flex-direction: column; gap: 10px;
+    align-items: center; padding-top: 10px; padding-bottom: 10px;
+    overflow-y: auto; overflow-x: hidden; color: var(--font-color);
 }
 
-/* width */
-::-webkit-scrollbar {
-    width: 3px;
-  }
-  
-  /* Track */
-  ::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 5px rgb(255, 255, 255)b9b2d; 
-    border-radius: 10px;
-  }
-   
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background: #9b9b9b59; 
-    border-radius: 10px;
-  }
-  
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background: #9b9b9b4f; 
-  }
-
-
-  #selectBtn {
-    display: block;
-    padding: 10px 20px;
-    font-size: 16px;
-    color: white;
-    border: none;
-    cursor: pointer;
+#selectBtn {
+    display: block; padding: 10px 20px; font-size: 16px; font-family: var(--font-family); color: var(--font-color);
+    background-color: var(--button-color); border: none; border-radius: 10px; cursor: pointer;
     box-shadow: 0px -5px 10px 0px var(--ui-color);
-
-    background-color: var(--button-color);
-    border-radius: 10px;
-  }
-
-  .tree {
-    margin: 20px;
-    
-  }
-  .tree ul {
-    list-style-type: none;
-    padding-left: 20px;
-  }
-  .tree li {
-    line-height: 1.5em;
-    position: relative;
-    margin: 2px 0;
-    cursor: pointer;
-  }
-  .tree li::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -10px;
-    border-left: 1px solid #3c3c3c;
-    bottom: 0;
-  }
-  .tree li::after {
-    content: "";
-    position: absolute;
-    top: 1em;
-    left: -10px;
-    width: 10px;
-    height: 0;
-    border-top: 1px solid #3c3c3c;
-  }
-  .folder {
-    font-weight: bold;
-  }
-  .file {
-    margin-left: 15px;
-  }
-  .hidden {
-    display: none;
-  }
+    margin-bottom: 10px; width: calc(100% - 20px); box-sizing: border-box; text-align: center;
+}
 
 
-
-
-/** Display*/
+/** Display Area
+    -------------------------------------------------------------------------- */
 #display {
-    grid-column: 2;
-    grid-row: 2;
-    position: relative;
-    background-image: url('/Assets/Wallpapers/opeBase_wp1.png');
-    background-color: white;
-    background-size: auto;
-    background-position: center;
-    background-repeat: no-repeat;
-    overflow: hidden;
+    grid-column: 2; grid-row: 2; position: relative;
+    background-image: var(--background-image);
+    background-color: var(--ui-color); background-size: cover;
+    background-position: center; background-repeat: no-repeat; overflow: hidden;
 }
 
-/*? Windows*/
-/* Add these styles to your existing CSS file or a <style> tag */
+/*? UI Components
+   ========================================================================== */
 
-/*? Windows Additions */
+/** Windows
+    -------------------------------------------------------------------------- */
 .window {
-    /* ... other window styles ... */
-    position: absolute;
-    background-color: #3a363e;
-    border: 1px solid #555;
-    border-radius: 8px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
-    min-width: 250px;
-    min-height: 150px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    color: var(--font-color);
-
-    /* --- Base Transitions (for Open, Max/Restore, Close, Minimize) --- */
-    opacity: 1;
-    transform: scale(1) translateY(0);
-    transition: opacity 0.25s ease-out,
-                transform 0.25s ease-out,
-                width 0.3s ease-in-out, /* For maximize/restore */
-                height 0.3s ease-in-out, /* For maximize/restore */
-                top 0.3s ease-in-out,    /* For maximize/restore */
-                left 0.3s ease-in-out;   /* For maximize/restore */
+    position: absolute; background-color: #ffffff00; border: 1px solid var(--window-border-color);
+    border-radius: 8px; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+    min-width: 250px; min-height: 150px;
+    overflow: hidden; /* CHANGED: This clips content to rounded corners */
+    display: flex; flex-direction: column; color: var(--font-color);
+    opacity: 1; transform: scale(1) translateY(0);
+    transition: opacity 0.25s ease-out, transform 0.25s ease-out,
+                width 0.3s ease-in-out, height 0.3s ease-in-out,
+                top 0.3s ease-in-out, left 0.3s ease-in-out;
 }
-
 .window-header {
-    height: 30px;
-    background-color: #2e2b2f; /* Slightly different header color */
-    display: flex;
-    align-items: center;
-    padding: 0 10px;
-    cursor: move; /* Indicate draggability */
-    border-bottom: 1px solid #555;
-    flex-shrink: 0; /* Prevent header from shrinking */
-    user-select: none; /* Prevent text selection during drag */
+    height: 30px; background-color: var(--window-header-color); display: flex; align-items: center;
+    padding: 0 10px; cursor: move; border-bottom: 1px solid var(--window-border-color);
+    flex-shrink: 0; user-select: none;
 }
-
 .window-title {
-    flex-grow: 1; /* Take available space */
-    font-size: 14px;
-    white-space: nowrap; /* Prevent title wrapping */
-    overflow: hidden;
-    text-overflow: ellipsis; /* Add ... if title is too long */
+    flex-grow: 1; font-size: 14px; white-space: nowrap;
+    overflow: hidden; text-overflow: ellipsis;
 }
-
-.window-controls {
-    display: flex;
-    gap: 8px;
-}
-
+.window-controls { display: flex; gap: 8px; }
 .window-control {
-    width: 12px;
-    height: 12px;
-    border-radius: 5px;
-    cursor: pointer;
-    border: 1px solid rgba(0, 0, 0, 0.2);
+    width: 12px; height: 12px; border-radius: 3px; cursor: pointer;
+    border: 1px solid rgba(0, 0, 0, 0.2); transition: background-color 0.15s ease;
 }
-
-.minimize { background-color: #ffbd44; }
-.maximize { background-color: #00ca56; }
-.close    { background-color: #ff605c; }
-
-.minimize:hover { background-color: #ffd170; }
-.maximize:hover { background-color: #33d47a; }
-.close:hover    { background-color: #ff8a87; }
+.window-control.minimize { background-color: var(--minimize-button); }
+.window-control.maximize { background-color: var(--maximize-button); }
+.window-control.close    { background-color: var(--close-button); }
+.window-control.minimize:hover { background-color: var(--minimize-button-hover); }
+.window-control.maximize:hover { background-color: var(--maximize-button-hover); }
+.window-control.close:hover    { background-color: var(--close-button-hover); }
 
 .window-content {
-    flex-grow: 1; /* Take remaining space */
-    padding: 10px;
-    overflow: auto; /* Allow content scrolling */
-    background-color: #4a464e; /* Content area background */
+    flex-grow: 1; overflow: auto; background-color: var(--window-background-color);
+    display: flex; flex-direction: column;
 }
 
-/* --- Resizing Handles (Optional but Recommended) --- */
-.resizer {
-    position: absolute;
-    width: 10px;  /* Adjust size as needed */
-    height: 10px; /* Adjust size as needed */
-    background: transparent; /* Invisible, relies on cursor */
-    /* Add z-index if needed to ensure they are clickable over content near edges */
-    /* z-index: 1; */
+#display .window-content pre {
+    white-space: pre-wrap; word-wrap: break-word; margin: 0;
+    font-family: Consolas, 'Courier New', monospace; padding: 10px;
+    overflow: auto; height: 100%; box-sizing: border-box;
+    color: var(--font-color);
 }
+#display .window-content code { display: block; }
 
+.image-viewer-container, .audio-player-container, .video-player-container, .file-info-container {
+    width: 100%; height: 100%; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; overflow: hidden;
+    padding: 10px; box-sizing: border-box; background-color: var(--button-color);
+}
+.image-viewer-container {
+    background-image: linear-gradient(45deg, var(--transparency-texture-color) 25%, transparent 25%), linear-gradient(-45deg, var(--transparency-texture-color) 25%, transparent 25%), linear-gradient(45deg, transparent 75%, var(--transparency-texture-color) 75%), linear-gradient(-45deg, transparent 75%, var(--transparency-texture-color) 75%);
+    background-size: 20px 20px; background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+}
+.image-viewer-image { max-width: 100%; max-height: 100%; display: block; object-fit: contain; }
+.audio-player-container { background-color: #ffffff00; justify-content: space-around; }
+.audio-player { width: 90%; max-width: 400px; }
+.video-player-container { background-color: #ffffff00; justify-content: space-between; }
+.video-player { max-width: 100%; max-height: calc(100% - 30px); display: block; }
+.media-title {
+    padding: 5px 10px; font-size: 0.9em; color: var(--font-color); text-align: center;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    width: 95%; margin-top: 5px; margin-bottom: 5px; flex-shrink: 0;
+}
+.file-info-container { align-items: flex-start; justify-content: flex-start; background-color: var(--button-color); color: var(--font-color); }
+.file-info-title { font-weight: bold; margin-bottom: 10px; font-size: 1.1em; }
+.file-info-container.error { background-color: #5c3232; }
+.file-info-container.error .file-info-title { color: #ff8a87; }
+
+.resizer { position: absolute; background: transparent; z-index: 10; }
 .resizer.bottom-right {
+    width: 12px; height: 12px;
     bottom: 0;
     right: 0;
-    cursor: nwse-resize; /* Diagonal */
+    cursor: nwse-resize;
     background-color: var(--button-color);
     border-radius: 3px;
     opacity: 0.6;
 }
-
-/* NEW Styles */
-.resizer.bottom-left {
-    bottom: 0;
-    left: 0;
-    cursor: nesw-resize; /* Opposite diagonal */
-}
-
-.resizer.top-right {
-    top: 0;
-    right: 0;
-    cursor: nesw-resize; /* Opposite diagonal */
-}
-
-.resizer.top-left {
-    top: 0;
-    left: 0;
-    cursor: nwse-resize; /* Diagonal */
-}
+.resizer.bottom-left  { width: 10px; height: 10px; bottom: 0; left: 0; cursor: nesw-resize; }
+.resizer.top-right    { width: 10px; height: 10px; top: 0;  right: 0; cursor: nesw-resize; }
+.resizer.top-left     { width: 10px; height: 10px; top: 0;  left: 0; cursor: nwse-resize; }
 
 
-/* --- Taskbar Item --- */
+/** Taskbar Items (Tabs on Tray)
+    -------------------------------------------------------------------------- */
 .taskbar-item {
     background-color: var(--button-color);
     color: var(--font-color);
     height: 40px;
-    max-width: 200px;
+    min-width: 60px;
+    max-width: 180px;
     border-radius: 10px;
     box-shadow: 0px 10px 10px 0px rgba(0,0,0,0.5);
     cursor: pointer;
     display: flex;
     align-items: center;
-    justify-content: flex-start; /* Changed from center */
     font-size: 12px;
     font-weight: bold;
     user-select: none;
     flex-shrink: 0;
     filter: brightness(1);
-    transition: filter 0.15s ease-in-out, box-shadow 0.2s ease;
-
-    /* --- Adjustments for close button --- */
-    padding: 0 30px 0 15px; /* More right padding */
-    position: relative;     /* Crucial for positioning child */
-    width: auto;            /* Allow natural width based on content */
-    overflow: visible;      /* Allow button to slightly overflow if needed */
-    /* --- End Adjustments --- */
+    transition: filter 0.15s ease-in-out, box-shadow 0.2s ease, background-color 0.2s ease;
+    padding: 0 10px 0 15px;
+    position: relative;
 }
 
-
-/* ... existing taskbar-item states (.active, .minimized, :hover, .dragging, .drag-over) ... */
-.taskbar-item.active {
-    box-shadow: 0px 10px 10px 0px rgba(40, 0, 60, 0.5);
-    border: none;
-}
-
-.taskbar-item.minimized {
-    opacity: 0.6;
-    filter: blur(1px);
-    box-shadow: 0px 0px 0px 0px rgba(40, 0, 60, 0.5);
-}
-
-.taskbar-item:hover {
-    filter: brightness(1.2);
-}
-
-.taskbar-item.dragging {
-    opacity: 0.4;
-    cursor: grabbing;
-}
-
-.taskbar-item.drag-over-before {
-    /* Indicate insertion point *before* this item */
-    box-shadow: inset 3px 0 0 0 var(--higlight-color), 0px 10px 10px 0px rgba(40, 0, 60, 0.5); /* Inset left border + existing active shadow */
-}
-
-.taskbar-item.drag-over-after {
-    /* Indicate insertion point *after* this item */
-     box-shadow: inset -3px 0 0 0 var(--higlight-color), 0px 10px 10px 0px rgba(40, 0, 60, 0.5); /* Inset right border + existing active shadow */
+.taskbar-item-title {
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-right: 25px;
 }
 
 .taskbar-item-close {
     position: absolute;
-    top: 50%;             /* Center vertically */
-    right: 8px;           /* Position from the right edge */
-    transform: translateY(-50%); /* Fine-tune vertical centering */
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);
     width: 16px;
     height: 16px;
-    background-color: rgba(255, 255, 255, 0.1); /* Subtle background */
+    background-color: rgba(255, 255, 255, 0.1);
     color: var(--font-color);
-    border-radius: 5px;   /* Make it circular */
+    border-radius: 3px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 14px;      /* Adjust size of 'X' */
-    line-height: 1;       /* Prevent extra spacing */
+    font-size: 14px;
+    line-height: 1;
     font-weight: bold;
-    cursor: pointer;
-    opacity: 0.7;         /* Slightly transparent by default */
-    transition: background-color 0.15s ease, opacity 0.15s ease, transform 0.1s ease;
+    opacity: 0.7;
+    transition: all 0.15s ease;
+}
+.taskbar-item-close:hover { background-color: #ff605c; color: #500; opacity: 1; transform: translateY(-50%) scale(1.1); }
+.taskbar-item-close:active { background-color: #d13c38; transform: translateY(-50%) scale(1); }
+
+
+/** File Tree (Sidebar Content)
+    -------------------------------------------------------------------------- */
+#treeContainer {
+  font-family: var(--font-family);
+  font-size: 14px;
+  padding: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  color: var(--font-color);
 }
 
-.taskbar-item-close:hover {
-    background-color: #ff605c; /* Use close button red on hover */
-    color: #500; /* Darker text */
-    opacity: 1;
-    transform: translateY(-50%) scale(1.1); /* Slightly larger on hover */
+.tree-root {
+  padding-left: 0;
+  list-style: none;
+  margin: 0;
 }
 
-.taskbar-item-close:active {
-    background-color: #d13c38; /* Darker red when clicked */
-    transform: translateY(-50%) scale(1);   /* Back to normal size on click */
+.tree-root ul.nested {
+  padding-left: 18px;
+  list-style: none;
+  margin: 0;
+  border-left: 1px dotted #777;
 }
 
-.window.is-dragging,
-.window.is-resizing {
-    transition: none !important; /* Override base transitions */
+.tree-root li {
+  padding: 4px 0;
+  position: relative;
 }
 
-/* --- State for closing/minimizing animation --- */
-.window.closing,
-.window.minimizing {
+.tree-root ul.nested > li::before {
+  content: "";
+  position: absolute;
+  top: 12px;
+  left: -10px;
+  width: 8px;
+  height: 1px;
+  border-top: 1px dotted #777;
+}
+.tree-root > li.file-li::before {
+    display: none;
+}
+
+.folder, .file {
+  cursor: pointer;
+  user-select: none;
+  display: inline-block;
+  padding: 3px 6px;
+  border-radius: 4px;
+  transition: background-color 0.15s ease;
+  width: calc(100% - 10px);
+  box-sizing: border-box;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.folder:hover, .file:hover {
+  background-color: var(--button-color);
+}
+
+.folder .toggle {
+  display: inline-block;
+  width: 1em;
+  text-align: center;
+  margin-right: 5px;
+  transition: transform 0.15s ease-in-out;
+  color: #aaa;
+}
+
+.directory-li.open > .folder .toggle {
+  transform: rotate(90deg);
+}
+
+.directory-li > ul.nested {
+  display: none;
+  margin-top: 4px;
+}
+
+.directory-li.open > ul.nested {
+  display: block;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.directory-li.loading > .folder .toggle {
+  color: var(--higlight-color);
+  animation: spin 1s linear infinite;
+}
+
+
+/*? States & Animations
+   ========================================================================== */
+.buttonAni, #start-menu, #search-menu, #toggle-sidebar, .actionButton {
+    filter: brightness(1);
+    transition: filter 0.15s ease-in-out, box-shadow 0.2s ease, transform 0.2s ease-in-out;
+}
+.buttonAni:hover, #start-menu:hover, #search-menu:hover, #toggle-sidebar:hover, .actionButton:hover {
+    filter: brightness(1.3);
+}
+#toggle-sidebar:hover{ transform: scale(1.05); }
+
+
+.window.is-dragging, .window.is-resizing { transition: none !important; }
+.window.closing, .window.minimizing {
     opacity: 0 !important;
-    transform: scale(0.85) translateY(30px) !important;
-    pointer-events: none; /* Prevent interaction during animation */
+    transform: var(--minimize-transform, scale(0.85) translateY(30px)) !important;
+    pointer-events: none;
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.35s cubic-bezier(0.4, 0, 1, 1) !important;
 }
-
-/* Maximized state - KEEP AS IS */
 .window.maximized {
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    border-radius: 0;
-    border: none;
+    top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important;
+    border-radius: 0; border: none; box-shadow: none;
 }
 .window.maximized .window-header { border-radius: 0; }
 .window.maximized .resizer { display: none; }
 
-/*? Animations*/
-.buttonAni {
-    filter: brightness(1);
-    transition: filter 0.15s ease-in-out;
+
+/* Taskbar Item States - Using your original shadow classes */
+.button-shadow{ box-shadow: 0px 10px 10px 0px rgba(0,0,0,0.5); }
+.button-shadow-active{ box-shadow: 0px 10px 10px 0px rgba(40, 0, 60, 0.5); }
+
+.taskbar-item.active {
+    background-color: var(--higlight-color);
+    color: var(--font-color);
+    box-shadow: 0px 10px 10px 0px rgba(40, 0, 60, 0.5);
 }
-.buttonAni:hover {
-    filter: brightness(1.2);
-}
+.taskbar-item.minimized { opacity: 0.6; filter: grayscale(50%) brightness(0.8); box-shadow: none; }
+.taskbar-item.dragging { opacity: 0.5; cursor: grabbing; transform: scale(0.95); background-color: var(--higlight-color); }
+.taskbar-item.drag-over-before { box-shadow: inset 4px 0 0 0 var(--higlight-color-bright), var(--highlight-shadow-bright); }
+.taskbar-item.drag-over-after { box-shadow: inset -4px 0 0 0 var(--higlight-color-bright), var(--highlight-shadow-bright); }
+
+
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+
+/*? Utility Styles
+   ========================================================================== */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 10px; }
+::-webkit-scrollbar-thumb { background: #666; border-radius: 10px; border: 2px solid transparent; background-clip: content-box; }
+::-webkit-scrollbar-thumb:hover { background: #888; }
+/* * { scrollbar-width: thin; scrollbar-color: #666 rgba(0,0,0,0.1); } */
