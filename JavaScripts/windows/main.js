@@ -25,24 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
         console.warn('#display element should have "position: relative;" in CSS for accurate window positioning.');
     }
 
-    // --- Example Usage: Start Menu Listener ---
-    if (startMenu) {
-        let windowCount = 0;
-        startMenu.addEventListener('click', () => {
-            windowCount++;
-            const newId = `win_${Date.now()}`;
-            // Call the main createWindow function, passing the display element
-            createWindow(
-                newId,
-                `Window ${windowCount}`,
-                `<h3>Content ${windowCount}</h3><p>Modularized window system!</p>`,
-                display // Pass display element
-            );
-        });
-    } else {
-        console.log("Add id='start-menu' element for example window creation.");
-    }
-
     // --- Expose Global API ---
     // Make createWindow available globally if needed by other non-module scripts
     window.OpeBase = window.OpeBase || {};
