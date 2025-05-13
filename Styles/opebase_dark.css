@@ -111,7 +111,7 @@ body {
     border-radius: 4px;
 }
 #toggle-sidebar { width: 20px; background-image: url("/Assets/Icons/toggle_sidebar.png"); background-size: 150%; }
-#start-menu { width: 40px; background-image: url("/Assets/Icons/startmenu.png"); background-size: 100%; border-radius: 10px; }
+#start-menu { width: 40px; background-image: url("/Assets/Icons/startmenu.png"); background-size: 90%; border-radius: 10px; }
 #search-menu { width: 40px; background-image: url("/Assets/Icons/search.png"); background-size: 80%; border-radius: 10px; }
 
 
