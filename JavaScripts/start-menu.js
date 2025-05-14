@@ -1,339 +1,211 @@
 function openStartMenu() {
-    const menuPoints = ["Settings"];
-    const startMenuButton = document.getElementById("start-menu");
-    const startMenuXCoord = startMenuButton ? startMenuButton.getBoundingClientRect().left : 0;
+  const menuPoints = ["Settings"];
+  const startMenuButton = document.getElementById("start-menu");
+  const startMenuXCoord = startMenuButton ? startMenuButton.getBoundingClientRect().left : 0;
 
-    const menuDivs = menuPoints.map((element, index) => {
-        const div = document.createElement("div");
-        div.id = element;
-        div.style.position = "absolute";
-        div.style.height = "50px";
-        div.style.width = "140px";
-        div.style.borderRadius = "12px";
-        div.style.backgroundColor = "#f9f9f9";
-        div.style.boxShadow = "0 4px 12px rgba(0, 0, 0, 0.15)";
-        div.style.cursor = "pointer";
-        div.style.transition = "background-color 0.2s ease, transform 0.2s ease";
-        div.style.display = "flex";
-        div.style.alignItems = "center";
-        div.style.justifyContent = "center";
-        div.style.fontFamily = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
-        div.style.fontSize = "16px";
-        div.style.fontWeight = "500";
-        div.style.color = "#333";
-        div.style.userSelect = "none";
-        div.style.top = `${startMenuButton ? startMenuButton.getBoundingClientRect().bottom + 15 + index * 60 : 0}px`;
-        div.style.left = `${startMenuXCoord}px`;
+  const menuDivs = menuPoints.map((element, index) => {
+      const div = document.createElement("div");
+      div.id = element; // ID for JS targeting and potential specific styling
+      div.classList.add("start-menu-item"); // Class for general styling
 
-        div.onmouseenter = () => {
-            div.style.backgroundColor = "#e0e0e0";
-            div.style.transform = "translateY(-2px)";
-        };
-        div.onmouseleave = () => {
-            div.style.backgroundColor = "#f9f9f9";
-            div.style.transform = "translateY(0)";
-        };
+      // Dynamic positioning remains in JS
+      div.style.top = `${startMenuButton ? startMenuButton.getBoundingClientRect().bottom + 15 + index * 60 : 0}px`;
+      div.style.left = `${startMenuXCoord}px`;
 
-        div.onclick = function () {
-            window[element + "Click"]?.();
-            menuDivs.forEach(div => div.remove());
-        };
+      // onClick logic remains
+      div.onclick = function () {
+          // Check if the function exists globally before calling
+          if (typeof window[element + "Click"] === 'function') {
+              window[element + "Click"]();
+          } else {
+              console.warn(`Function ${element}Click not found.`);
+          }
+          // Assuming menuDivs here refers to the divs created in this instance of openStartMenu
+          // If menuDivs should refer to ALL open start-menu-items, querySelectorAll would be needed here
+          // For simplicity, keeping it to the current scope's items.
+          // To close all items of this type, one might do:
+          // document.querySelectorAll('.start-menu-item').forEach(item => item.remove());
+          // But the original closeMenu handles this more broadly based on IDs.
+          menuDivs.forEach(d => d.remove());
+      };
 
-        div.textContent = element;
-
-        document.body.appendChild(div);
-
-        return div;
-    });
+      div.textContent = element;
+      document.body.appendChild(div);
+      return div;
+  });
 }
 
-
 document.addEventListener("click", (e) => {
-    if(!e.target.closest("#start-menu") && !e.target.closest("#Start") && !e.target.closest("#Settings")) {
-        closeMenu();
-    }
+  // Close if click is outside the start menu button, and outside any item with class .start-menu-item or ID #Settings
+  // The original logic was: !e.target.closest("#start-menu") && !e.target.closest("#Start") && !e.target.closest("#Settings")
+  // We can make it more generic for items created by openStartMenu
+  const isStartMenuItem = e.target.closest(".start-menu-item");
+  const isStartMenuButton = e.target.closest("#start-menu");
+
+  if (!isStartMenuButton && !isStartMenuItem) {
+      closeMenu();
+  }
 });
 
 function closeMenu() {
-    const menuDivs = document.querySelectorAll("#Start, #Settings");
-    menuDivs.forEach(div => div.remove());
+  // Closes elements with specific IDs as per original logic,
+  // or all .start-menu-item if that's preferred.
+  // Original: const menuDivs = document.querySelectorAll("#Start, #Settings");
+  // If "Start" is also a .start-menu-item with ID "Start":
+  const menuDivs = document.querySelectorAll(".start-menu-item"); // More generic if all items have this class
+  menuDivs.forEach(div => div.remove());
 }
 
-
-
 (() => {
-  // Inject CSS
-  const style = document.createElement('style');
-  style.textContent = `
-    .setting-row {
-      display: flex;
-      align-items: center;
-      margin: 14px 0;
-      gap: 14px;
-      font-size: 1.15em;
-      color: #fff;
-    }
+// CSS is now in start-menu.css, so no CSS injection here.
 
-    .setting-row img.icon {
-      width: 26px;
-      height: 26px;
-    }
+// SettingsClick function
+window.SettingsClick = function() {
+  if (document.getElementById('settingsWindow')) return;
 
-    #iconSelector {
-      display: none;
-      position: absolute;
-      background-color:rgb(61, 61, 61);
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 12px;
-      flex-wrap: wrap;
-      gap: 12px;
-      min-width: 200px;
-      max-width: 300px;
-      max-height: 250px;
-      overflow-y: auto;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      z-index: 1001;
-    }
+  const settingsWindow = document.createElement('div');
+  settingsWindow.id = 'settingsWindow';
 
-    #iconSelector .close-icon {
-      position: absolute;
-      top: 6px;
-      right: 6px;
-      cursor: pointer;
-      font-size: 1.2em;
-      color: #fff;
-    }
+  const settingsBox = document.createElement('div');
+  settingsBox.id = 'settingsBox';
 
-    #iconSelector img.icon-option {
-      width: 40px;
-      height: 40px;
-      cursor: pointer;
-      border-radius: 6px;
-      transition: transform 0.1s ease;
-    }
+  const title = document.createElement('h2');
+  title.textContent = '⚙️ Settings';
+  // title.style.textAlign = 'center'; // Moved to CSS
+  // title.style.color = '#fff'; // Moved to CSS
+  settingsBox.appendChild(title);
 
-    #iconSelector img.icon-option:hover {
-      transform: scale(1.1);
-    }
+  const form = document.createElement('form');
+  form.id = 'settingsForm';
 
-    #settingsWindow {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background-color: rgba(0, 0, 0, 0.6);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
-
-    #settingsBox {
-      position: relative;
-      width: 480px;
-      max-height: 85vh;
-      background-color: rgb(39, 39, 39);
-      border-radius: 12px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-      overflow-y: auto;
-      padding: 24px;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    #settingsBox h2 {
-      margin-top: 0;
-      font-size: 1.6em;
-      color: #222;
-    }
-
-    button {
-      padding: 8px 16px;
-      font-size: 1em;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      background-color: #eee;
-      transition: background-color 0.2s ease;
-    }
-
-    button:hover {
-      background-color: #ddd;
-    }
-
-    #btnRow {
-      justify-content: flex-end;
-      margin-top: 24px;
-    }
+  const langRow = document.createElement('div');
+  langRow.className = 'setting-row';
+  langRow.innerHTML = `
+    <span>🌐</span>
+    <label for='languageSelect'>Nyelv:</label>
+    <select id='languageSelect' disabled>
+      <option>Magyar</option>
+      <option>English</option>
+    </select>
   `;
-  document.head.appendChild(style);
+  form.appendChild(langRow);
 
-  // SettingsClick function
-  window.SettingsClick = function() {
-    //console.log('Settings clicked.');
+  const themeRow = document.createElement('div');
+  themeRow.className = 'setting-row';
+  themeRow.innerHTML = `
+    <span>🎨</span>
+    <label for='themeSelect'>Theme:</label>
+    <select id='themeSelect' disabled>
+      <option>Dark</option>
+      <option>Light</option>
+    </select>
+  `;
+  form.appendChild(themeRow);
 
+  const fullRow = document.createElement('div');
+  fullRow.className = 'setting-row';
+  fullRow.innerHTML = `
+    <span>🖥️</span>
+    <label for='fullscreenToggle'>Fullscreen:</label>
+    <input type='checkbox' disabled id='fullscreenToggle'>
+  `;
+  form.appendChild(fullRow);
 
-    if (document.getElementById('settingsWindow')) return;
+  const iconRow = document.createElement('div');
+  iconRow.className = 'setting-row';
+  const selectedIcon = document.createElement('img');
+  selectedIcon.id = 'selectedIcon';
+  selectedIcon.className = 'icon';
+  selectedIcon.src = 'assets/icons/startmenu.png';
 
-    // Overlay
-    const settingsWindow = document.createElement('div');
-    settingsWindow.id = 'settingsWindow';
-
-    // Box
-    const settingsBox = document.createElement('div');
-    settingsBox.id = 'settingsBox';
-
-    // Title
-    const title = document.createElement('h2');
-    title.textContent = '⚙️ Settings';
-    title.style.textAlign = 'center';
-    title.style.color = '#fff';
-    settingsBox.appendChild(title);
-
-    // Form
-    const form = document.createElement('form');
-    form.id = 'settingsForm';
-
-    // Language (disabled)
-    const langRow = document.createElement('div');
-    langRow.className = 'setting-row';
-    langRow.innerHTML = `
-      <span>🌐</span>
-      <label for='languageSelect'>Nyelv:</label>
-      <select id='languageSelect' disabled>
-        <option>Magyar</option>
-        <option>English</option>
-      </select>
-    `;
-    form.appendChild(langRow);
-
-    // Theme (disabled)
-    const themeRow = document.createElement('div');
-    themeRow.className = 'setting-row';
-    themeRow.innerHTML = `
-      <span>🎨</span>
-      <label for='themeSelect'>Theme:</label>
-      <select id='themeSelect' disabled>
-        <option>Dark</option>
-        <option>Light</option>
-      </select>
-    `;
-    form.appendChild(themeRow);
-
-
-    // Fullscreen Mode toggle
-    const fullRow = document.createElement('div');
-    fullRow.className = 'setting-row';
-    fullRow.innerHTML = `
-      <span>🖥️</span>
-      <label for='fullscreenToggle'>Fullscreen:</label>
-      <input type='checkbox' disabled id='fullscreenToggle'>
-    `;
-    form.appendChild(fullRow);
-
-
- 
-
-
-    // Icon selector row
-    const iconRow = document.createElement('div');
-    iconRow.className = 'setting-row';
-    const selectedIcon = document.createElement('img');
-    selectedIcon.id = 'selectedIcon';
-    selectedIcon.className = 'icon';
-    selectedIcon.src = 'assets/icons/startmenu.png'; // Default icon
-
-    const iconBtn = document.createElement('button');
-    iconBtn.type = 'button';
-    iconBtn.disabled = true;
-    iconBtn.textContent = 'Ikon...';
-    iconBtn.onclick = (e) => {
-      e.stopPropagation();
-      const rect = iconBtn.getBoundingClientRect();
-      iconSelector.style.top = rect.bottom + window.scrollY + 'px';
-      iconSelector.style.left = rect.left + window.scrollX + 'px';
-      iconSelector.style.display = iconSelector.style.display === 'flex' ? 'none' : 'flex';
-    };
-
-    iconRow.innerHTML = `<span>🔍</span><label>Ikon:</label>`;
-    iconRow.appendChild(selectedIcon);
-    iconRow.appendChild(iconBtn);
-    form.appendChild(iconRow);
-
-    // Icon selector overlay
-    const iconSelector = document.createElement('div');
-    iconSelector.id = 'iconSelector';
-    iconSelector.style.display = 'none';
-
-    // Close icon
-    const closeX = document.createElement('span');
-    closeX.className = 'close-icon';
-    closeX.textContent = '✖️';
-    closeX.onclick = () => iconSelector.style.display = 'none';
-    iconSelector.appendChild(closeX);
-
-    const iconList = ['icon1.png'];
-    iconList.forEach(filename => {
-      const iconImg = document.createElement('img');
-      iconImg.src = 'icons/' + filename;
-      iconImg.className = 'icon-option';
-      iconImg.onclick = (e) => {
-        selectedIcon.src = iconImg.src;
-        iconSelector.style.display = 'none';
-      };
-      iconSelector.appendChild(iconImg);
-    });
-
-    settingsBox.appendChild(iconSelector);
-
-    // Save and Reset buttons
-    const btnRow = document.createElement('div');
-    btnRow.id = 'btnRow';
-    btnRow.className = 'setting-row';
-
-    const saveBtn = document.createElement('button');
-    saveBtn.type = 'button';
-    saveBtn.textContent = '💾 Mentés';
-    saveBtn.onclick = () => {
-      const settings = {
-        language: document.getElementById('languageSelect').value,
-        theme: document.getElementById('themeSelect').value,
-        fullscreen: document.getElementById('fullscreenToggle').checked,
-        icon: selectedIcon.src
-      };
-      localStorage.setItem('appSettings', JSON.stringify(settings));
-      alert('Beállítások mentve!');
-    };
-
-    const resetBtn = document.createElement('button');
-    resetBtn.type = 'button';
-    resetBtn.textContent = '🔄 Reset';
-    resetBtn.onclick = () => {
-      const saved = JSON.parse(localStorage.getItem('appSettings') || '{}');
-      if (saved.language) document.getElementById('languageSelect').value = saved.language;
-      if (saved.theme) document.getElementById('themeSelect').value = saved.theme;
-      if (saved.fullscreen !== undefined) document.getElementById('fullscreenToggle').checked = saved.fullscreen;
-      if (saved.icon) selectedIcon.src = saved.icon;
-      alert('Beállítások visszaállítva.');
-    };
-
-    btnRow.appendChild(saveBtn);
-    btnRow.appendChild(resetBtn);
-    form.appendChild(btnRow);
-
-    settingsBox.appendChild(form);
-    settingsWindow.appendChild(settingsBox);
-    document.body.appendChild(settingsWindow);
-
-    // Close on background click
-    settingsWindow.addEventListener('click', e => {
-      if (e.target === settingsWindow) {
-        settingsWindow.remove();
-      }
-    });
+  const iconBtn = document.createElement('button');
+  iconBtn.type = 'button';
+  iconBtn.disabled = true;
+  iconBtn.textContent = 'Ikon...';
+  iconBtn.onclick = (e) => {
+    e.stopPropagation();
+    const iconSelector = document.getElementById('iconSelector'); // Get it when needed
+    if (!iconSelector) return;
+    const rect = iconBtn.getBoundingClientRect();
+    iconSelector.style.top = rect.bottom + window.scrollY + 'px';
+    iconSelector.style.left = rect.left + window.scrollX + 'px';
+    iconSelector.style.display = iconSelector.style.display === 'flex' ? 'none' : 'flex';
   };
+
+  iconRow.innerHTML = `<span>🔍</span><label>Ikon:</label>`;
+  iconRow.appendChild(selectedIcon);
+  iconRow.appendChild(iconBtn);
+  form.appendChild(iconRow);
+
+  const iconSelector = document.createElement('div');
+  iconSelector.id = 'iconSelector';
+  iconSelector.style.display = 'none'; // Initial state controlled by JS
+
+  const closeX = document.createElement('span');
+  closeX.className = 'close-icon';
+  closeX.textContent = '✖️';
+  closeX.onclick = () => iconSelector.style.display = 'none';
+  iconSelector.appendChild(closeX);
+
+  const iconList = ['icon1.png']; // Make sure path is correct
+  iconList.forEach(filename => {
+    const iconImg = document.createElement('img');
+    iconImg.src = 'icons/' + filename; // Adjust path if needed, e.g., 'assets/icons/'
+    iconImg.className = 'icon-option';
+    iconImg.alt = filename; // Good practice for accessibility
+    iconImg.onclick = (e) => {
+      selectedIcon.src = iconImg.src;
+      iconSelector.style.display = 'none';
+    };
+    iconSelector.appendChild(iconImg);
+  });
+
+  // Append iconSelector to settingsBox or body. Appending to settingsBox makes more sense contextually.
+  settingsBox.appendChild(iconSelector);
+
+
+  const btnRow = document.createElement('div');
+  btnRow.id = 'btnRow'; // ID for potential specific styling, already has class for layout
+  btnRow.className = 'setting-row'; // class for layout
+
+  const saveBtn = document.createElement('button');
+  saveBtn.type = 'button';
+  saveBtn.textContent = '💾 Mentés';
+  saveBtn.onclick = () => {
+    const settings = {
+      language: document.getElementById('languageSelect').value,
+      theme: document.getElementById('themeSelect').value,
+      fullscreen: document.getElementById('fullscreenToggle').checked,
+      icon: selectedIcon.src
+    };
+    localStorage.setItem('appSettings', JSON.stringify(settings));
+    alert('Beállítások mentve!');
+  };
+
+  const resetBtn = document.createElement('button');
+  resetBtn.type = 'button';
+  resetBtn.textContent = '🔄 Reset';
+  resetBtn.onclick = () => {
+    const saved = JSON.parse(localStorage.getItem('appSettings') || '{}');
+    if (saved.language) document.getElementById('languageSelect').value = saved.language;
+    if (saved.theme) document.getElementById('themeSelect').value = saved.theme;
+    if (saved.fullscreen !== undefined) document.getElementById('fullscreenToggle').checked = saved.fullscreen;
+    if (saved.icon) selectedIcon.src = saved.icon;
+    alert('Beállítások visszaállítva.');
+  };
+
+  btnRow.appendChild(saveBtn);
+  btnRow.appendChild(resetBtn);
+  form.appendChild(btnRow);
+
+  settingsBox.appendChild(form);
+  settingsWindow.appendChild(settingsBox);
+  document.body.appendChild(settingsWindow);
+
+  settingsWindow.addEventListener('click', e => {
+    if (e.target === settingsWindow) {
+      settingsWindow.remove();
+    }
+  });
+};
 })();
-
-
-
